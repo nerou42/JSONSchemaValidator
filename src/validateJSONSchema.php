@@ -52,8 +52,10 @@ foreach($files as $index => $file){
   echo '['.str_pad(strval($index+1), $countChars, ' ', STR_PAD_LEFT).'/'.count($files).'] '.
       $formattedFilename;
   try {
-    /** @var scalar|object $json */
-    $json = json_decode(file_get_contents($file), false, flags: JSON_THROW_ON_ERROR);
+    /**
+     * @var scalar|object $json
+     */
+    $json = json_decode(file_get_contents($file), flags: JSON_THROW_ON_ERROR);
   } catch(JsonException $ex){
     echo "[\033[31mSYNTAX ERROR\033[0m]".PHP_EOL;
     $errors++;
@@ -61,6 +63,9 @@ foreach($files as $index => $file){
   }
   
   try {
+    /**
+     * @psalm-suppress PossiblyInvalidPropertyFetch
+     */
     $result = $validator->validate($json, $json->{'$schema'} ?? 'https://json-schema.org/draft/2020-12/schema');
     if(!$result->isValid()){
       $errorMessage = json_encode(((new ErrorFormatter())->format($result->error())),
