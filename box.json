@@ -1,0 +1,12 @@
+{
+    "main": "src/validateJSONSchema.php",
+    "output": "bin/json-schema-validator",
+    "directories": [
+        "resource",
+        "src"
+    ],
+    "force-autodiscovery": true,
+    "algorithm": "SHA256",
+    "banner": "JSON Schema Validator @git-version@ by Andreas Wahlen",
+    "git-version": "git-version"
+}
