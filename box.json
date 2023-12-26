@@ -7,6 +7,6 @@
     ],
     "force-autodiscovery": true,
     "algorithm": "SHA256",
-    "banner": "JSON Schema Validator @git-version@ by Andreas Wahlen",
-    "git-version": "git-version"
+    "banner": "JSON Schema Validator by Andreas Wahlen",
+    "git": "git-version"
 }

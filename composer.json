@@ -22,9 +22,9 @@
     },
     "prefer-stable": true,
     "autoload": {
-        "psr-4": {
-            "": "src/"
-        }
+        "files": [
+            "src/functions.php"
+        ]
     },
     "bin": [
         "bin/json-schema-validator"

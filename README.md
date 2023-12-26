@@ -1,17 +1,20 @@
 # JSON Schema Validator
 
+[![License](http://poser.pugx.org/nerou/json-schema-validator/license)](https://packagist.org/packages/nerou/json-schema-validator)
+[![Version](http://poser.pugx.org/nerou/json-schema-validator/version)](https://packagist.org/packages/nerou/json-schema-validator)
+
 Validates some [JSON Schema](https://json-schema.org/) files against the JSON Schema specification.
 
 ## Installation
 
-
+`composer require [--dev] nerou/json-schema-validator`
 
 ## Usage
 
 Just pass some JSON schema files or folders containing those like so:
 
 ```shell
-php validateJSONSchema.php schema-file1.json schema-file2.json schema-folder [...]
+./vendor/bin/json-schema-validator schema-file1.json schema-file2.json schema-folder [...]
 ```
 
 ## License
