@@ -1,6 +1,7 @@
 # JSON Schema Validator
 
 [![License](http://poser.pugx.org/nerou/json-schema-validator/license)](https://packagist.org/packages/nerou/json-schema-validator)
+[![PHP Version Require](http://poser.pugx.org/nerou/json-schema-validator/require/php)](https://packagist.org/packages/nerou/json-schema-validator)
 [![Version](http://poser.pugx.org/nerou/json-schema-validator/version)](https://packagist.org/packages/nerou/json-schema-validator)
 [![Psalm Type Coverage](https://shepherd.dev/github/nerou42/JSONSchemaValidator/coverage.svg)](https://packagist.org/packages/nerou/json-schema-validator)
 
