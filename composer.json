@@ -19,7 +19,7 @@
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^4.0",
-        "humbug/box": "^4.6"
+        "humbug/box": "^3.16 || ^4.0"
     },
     "prefer-stable": true,
     "autoload": {
