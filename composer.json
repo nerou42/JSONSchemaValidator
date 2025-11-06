@@ -18,8 +18,9 @@
         "nerou/cli-parser": "^0.1"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "^4.0",
-        "humbug/box": "^3.16 || ^4.0"
+        "humbug/box": "^3.16 || ^4.0",
+        "rector/rector": "^2.0",
+        "squizlabs/php_codesniffer": "^4.0"
     },
     "prefer-stable": true,
     "autoload": {
@@ -37,12 +38,14 @@
         "phpcpd": "./tools/phpcpd src",
         "psalm": "./tools/psalm --no-diff --use-baseline=psalm.baseline.xml --php-version=8.1",
         "update-psalm-baseline": "./tools/psalm --no-diff --set-baseline=psalm.baseline.xml",
+        "rector": "./vendor/bin/rector process --dry-run",
         "build": "./vendor/bin/box compile",
         "tests": [
             "@phpcs",
             "@phpunit",
             "@phpcpd",
-            "@psalm"
+            "@psalm",
+            "@rector"
         ]
     },
     "scripts-descriptions": {
@@ -51,9 +54,8 @@
         "phpunit": "Runs unit/integration tests.",
         "phpcpd": "Runs copied code finder.",
         "psalm": "Runs static analysis.",
-        "psalm-stats": "Print files with unsafe types based on psalm.",
         "update-psalm-baseline": "Updates baseline for psalm. CAUTION should not be run as a regular procedure!",
-        "lines": "Gathers statistics about lines of code.",
+        "rector": "Runs PHP compatibility checks and code smell analysis.",
         "build": "Build PHAR",
         "tests": "Runs all available tests."
     }
