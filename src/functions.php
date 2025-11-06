@@ -29,11 +29,16 @@ function collectSchemaFiles(array $fileList): array {
 /**
  * @return string[]
  * @psalm-return list<string>
+ * @throws \InvalidArgumentException if given folder is not accessible
  */
 function listSchemasInFolder(string $folder): array {
   $folder = str_ends_with($folder, '/') ? substr($folder, 0, strlen($folder) - 1) : $folder;
+  $scanRes = scandir($folder);
+  if($scanRes === false){
+    throw new \InvalidArgumentException('folder '.$folder.' does not exist or is not readable');
+  }
   $res = [];
-  foreach(scandir($folder) as $filename){
+  foreach($scanRes as $filename){
     if(is_file($folder.'/'.$filename) && is_readable($folder.'/'.$filename) && str_ends_with($filename, '.json') !== false){
       $res[] = $folder.'/'.$filename;
     } else if(is_dir($folder.'/'.$filename) && is_readable($folder.'/'.$filename) && $filename !== '.' && $filename !== '..'){

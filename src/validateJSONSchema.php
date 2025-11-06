@@ -16,12 +16,7 @@ if(PHP_SAPI !== 'cli' || !isset($_SERVER['argv'])){
   exit(1);          // exit if not run via CLI
 }
 
-echo 'JSON Schema Validator @git-version@ by Andreas Wahlen'.PHP_EOL.PHP_EOL;
-
-if(!class_exists(\Opis\JsonSchema\Validator::class)){
-  echo "\033[31mFATAL: Opis\JsonSchema\Validator not found, is it required in your composer.json?\033[0m".PHP_EOL.PHP_EOL;
-  exit(10);
-}
+echo 'JSON Schema Validator @git-version@ by nerou GmbH'.PHP_EOL.PHP_EOL;
 
 $cliArgs = new CLIParser($_SERVER['argv']);
 $cliArgs->setAllowedOptions([]);
@@ -36,12 +31,15 @@ $startTime = microtime(true);
 // collect schema files to validate
 try {
   $files = collectSchemaFiles($cliArgs->getCommands());
-} catch(InvalidArgumentException $ex){
+} catch(\InvalidArgumentException $ex){
   echo "\033[31m".$ex->getMessage()."\033[0m".PHP_EOL;
   exit(20);
 }
 
 $cwd = getcwd();
+if($cwd === false){
+  throw new \UnexpectedValueException('unable to get current working directory');
+}
 $validator = new Validator();
 $validator->resolver()->registerPrefix('https://json-schema.org/', dirname(__DIR__).'/resource');
 $validator->resolver()->registerPrefix('http://json-schema.org/', dirname(__DIR__).'/resource');
@@ -52,10 +50,14 @@ foreach($files as $index => $file){
   echo '['.str_pad(strval($index+1), $countChars, ' ', STR_PAD_LEFT).'/'.count($files).'] '.
       $formattedFilename;
   try {
+    $fileContent = file_get_contents($file);
+    if($fileContent === false){
+      throw new \UnexpectedValueException('file '.$file.' could not be read');
+    }
     /**
      * @var scalar|object $json
      */
-    $json = json_decode(file_get_contents($file), flags: JSON_THROW_ON_ERROR);
+    $json = json_decode($fileContent, flags: JSON_THROW_ON_ERROR);
   } catch(JsonException $ex){
     echo "[\033[31mSYNTAX ERROR\033[0m]".PHP_EOL;
     $errors++;
@@ -65,8 +67,10 @@ foreach($files as $index => $file){
   try {
     /**
      * @psalm-suppress PossiblyInvalidPropertyFetch
+     * @var string $schema
      */
-    $result = $validator->validate($json, $json->{'$schema'} ?? 'https://json-schema.org/draft/2020-12/schema');
+    $schema = $json->{'$schema'} ?? 'https://json-schema.org/draft/2020-12/schema';
+    $result = $validator->validate($json, $schema);
     if(!$result->isValid()){
       $errorMessage = json_encode(((new ErrorFormatter())->format($result->error())),
           JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
@@ -86,8 +90,10 @@ foreach($files as $index => $file){
     }
   }
 }
-echo 'consumed '.number_format(microtime(true) - $startTime, 3).' s of processing time and '.
-    (memory_get_peak_usage(true) / 1024 / 1024).' MiB of memory'.PHP_EOL.PHP_EOL;
+echo sprintf('Time: %.3s s, Memory: %.2f MiB'.PHP_EOL.PHP_EOL,
+    microtime(true) - $startTime,
+    ((float) memory_get_peak_usage(true)) / 1024. / 1024.
+);
 echo 'JSON Schemas: '.count($files).', errors: '.$errors.PHP_EOL;
 if($errors > 0){
   exit(30);
