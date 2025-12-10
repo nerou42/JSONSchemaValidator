@@ -18,12 +18,12 @@ if(PHP_SAPI !== 'cli' || !isset($_SERVER['argv'])){
 
 echo 'JSON Schema Validator @git-version@ by nerou GmbH'.PHP_EOL.PHP_EOL;
 
-$cliArgs = new CLIParser($_SERVER['argv']);
+$cliArgs = new CLIParser($_SERVER['argv'], 'schema_file1.json schema_folder2 [...]');
 $cliArgs->setAllowedOptions([]);
 $cliArgs->setAllowedFlags([]);
 $cliArgs->setStrictMode(true);
 if(!$cliArgs->parse() || empty($cliArgs->getCommands())){
-  echo 'usage: php '.basename(__FILE__).' schema_file1.json schema_folder2 [...]'.PHP_EOL;
+  $cliArgs->printUsage();
   exit(2);
 }
 
@@ -32,7 +32,7 @@ $startTime = microtime(true);
 try {
   $files = collectSchemaFiles($cliArgs->getCommands());
 } catch(\InvalidArgumentException $ex){
-  echo "\033[31m".$ex->getMessage()."\033[0m".PHP_EOL;
+  echo "\e[31m".$ex->getMessage()."\e[0m".PHP_EOL;
   exit(20);
 }
 
@@ -59,7 +59,7 @@ foreach($files as $index => $file){
      */
     $json = json_decode($fileContent, flags: JSON_THROW_ON_ERROR);
   } catch(JsonException $ex){
-    echo "[\033[31mSYNTAX ERROR\033[0m]".PHP_EOL;
+    echo "[\e[31mSYNTAX ERROR\e[0m]".PHP_EOL;
     $errors++;
     continue;
   }
@@ -76,14 +76,14 @@ foreach($files as $index => $file){
           JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
       $errorMessage = str_replace('%24', '$', $errorMessage);
       $errorMessage = indent($errorMessage, $countChars * 2 + 4);
-      echo "[\033[31mSCHEMA ERROR\033[0m]".PHP_EOL.$errorMessage.PHP_EOL;
+      echo "[\e[31mSCHEMA ERROR\e[0m]".PHP_EOL.$errorMessage.PHP_EOL;
       $errors++;
     } else {
-      echo "[\033[32mOK\033[0m]".PHP_EOL;
+      echo "[\e[32mOK\e[0m]".PHP_EOL;
     }
   } catch(\ErrorException $ex){
     if(mb_strpos($ex->getMessage(), 'preg_match(): Compilation failed: ') === 0){
-      echo "[\033[31mSYNTAX ERROR\033[0m]".PHP_EOL.indent($ex->getMessage(), $countChars * 2 + 4).PHP_EOL;
+      echo "[\e[31mSYNTAX ERROR\e[0m]".PHP_EOL.indent($ex->getMessage(), $countChars * 2 + 4).PHP_EOL;
       $errors++;
     } else {
       throw $ex;

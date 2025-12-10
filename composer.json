@@ -15,7 +15,7 @@
         "php": ">=8.0",
         "ext-json": "*",
         "opis/json-schema": "^2.3",
-        "nerou/cli-parser": "^0.1"
+        "nerou/cli-parser": "^0.2"
     },
     "require-dev": {
         "humbug/box": "^3.16 || ^4.0",
