@@ -11,6 +11,11 @@
             "homepage": "https://www.nerou.de"
         }
     ],
+    "config": {
+        "platform": {
+            "php": "8.0"
+        }
+    },
     "require": {
         "php": ">=8.0",
         "ext-json": "*",
