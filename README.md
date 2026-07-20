@@ -21,4 +21,4 @@ Just pass some JSON schema files or folders containing those like so:
 
 ## License
 
-This library is licensed under the MIT License (MIT). Please see [LICENSE](LICENSE) for more information.
+This library is licensed under the MIT License. Please see [LICENSE](LICENSE) for more information.
