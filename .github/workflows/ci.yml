@@ -21,7 +21,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
       - uses: php-actions/composer@v6
         with:
-          php_version: "8.0"
+          php_version: "8.2"
       - name: Check coding standard
         run: composer phpcs
     
@@ -43,12 +43,6 @@ jobs:
     strategy:
       matrix:
         php:
-          - version: "8.0"
-            phpunit: "9"
-            args: "" 
-          - version: "8.1"
-            phpunit: "10"
-            args: ""
           - version: "8.2"
             phpunit: "10"
             args: ""
@@ -75,13 +69,14 @@ jobs:
         with:
           dev: no
           php_version: "${{ matrix.php.version }}"
+          php_extensions: json
       - uses: php-actions/phpunit@v4
         env:
           XDEBUG_MODE: coverage
         with:
           version: "${{ matrix.php.phpunit }}"
           php_version: "${{ matrix.php.version }}"
-          php_extensions: xdebug
+          php_extensions: xdebug json
           args: "--coverage-text ${{ matrix.php.args }}"
 
   rector:

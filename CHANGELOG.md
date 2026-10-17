@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/nerou42/JSONSchemaValidator/compare/v1.0.6...master)
 
+### Removed
+
+- PHP 8.0 and 8.1 support
+
 
 ## [v1.0.6](https://github.com/nerou42/JSONSchemaValidator/compare/v1.0.5...v1.0.6) - 2026-07-20
 
